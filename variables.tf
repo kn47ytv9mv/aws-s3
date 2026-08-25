@@ -2,6 +2,14 @@ variable "bucket" {
   default = null
 }
 
+variable "tags" {
+  default = {}
+}
+
+variable "force_destroy" {
+  default = false
+}
+
 variable "block_public_acls" {
   default = true
 }
@@ -34,3 +42,10 @@ variable "versioning" {
   default = "enabled"
 }
 
+variable "enforce_tls" {
+  default = true
+}
+
+variable "noncurrent_version_expiration_days" {
+  default = 90
+}
