@@ -19,7 +19,7 @@ variable "restrict_public_buckets" {
 }
 
 variable "sse_algorithm" {
-  default = "aes256"
+  default = "aws:kms"
 }
 
 variable "versioning" {
