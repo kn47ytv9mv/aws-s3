@@ -18,6 +18,10 @@ variable "restrict_public_buckets" {
   default = true
 }
 
+variable "kms_master_key_id" {
+  default = null
+}
+
 variable "sse_algorithm" {
   default = "aws:kms"
 }
