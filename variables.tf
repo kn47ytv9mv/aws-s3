@@ -26,6 +26,10 @@ variable "sse_algorithm" {
   default = "aws:kms"
 }
 
+variable "bucket_key_enabled" {
+  default = true
+}
+
 variable "versioning" {
   default = "enabled"
 }
