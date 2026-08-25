@@ -3,7 +3,7 @@ resource "random_uuid" "resource" {
 }
 
 resource "aws_s3_bucket" "resource" {
-  bucket = random_uuid.resource.id
+  bucket = coalesce(var.bucket, random_uuid.resource.id)
 }
 
 resource "aws_s3_bucket_versioning" "resource" {
