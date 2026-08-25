@@ -1,10 +1,24 @@
-variable "versioning" {
-  default = "enabled"
+variable "block_public_acls" {
+  default = true
 }
 
-variable "tags" {
-  default = {
-  
-  }
+variable "block_public_policy" {
+  default = true
+}
+
+variable "ignore_public_acls" {
+  default = true
+}
+
+variable "restrict_public_buckets" {
+  default = true
+}
+
+variable "sse_algorithm" {
+  default = "aes256"
+}
+
+variable "versioning" {
+  default = "enabled"
 }
 

@@ -1,3 +1,11 @@
+resource "random_uuid" "resource" {
+
+}
+
+resource "aws_s3_bucket" "resource" {
+  bucket = random_uuid.resource.id
+}
+
 resource "aws_s3_bucket_versioning" "resource" {
   bucket = aws_s3_bucket.resource.id
 
@@ -6,13 +14,22 @@ resource "aws_s3_bucket_versioning" "resource" {
   }
 }
 
-resource "aws_s3_bucket" "resource" {
-  bucket = random_uuid.resource.id
+resource "aws_s3_bucket_public_access_block" "resource" {
+  bucket = aws_s3_bucket.resource.id
 
-  tags = var.tags
+  block_public_acls       = var.block_public_acls
+  block_public_policy     = var.block_public_policy
+  ignore_public_acls      = var.ignore_public_acls
+  restrict_public_buckets = var.restrict_public_buckets
 }
 
-resource "random_uuid" "resource" {
+resource "aws_s3_bucket_server_side_encryption_configuration" "resource" {
+  bucket = aws_s3_bucket.resource.id
 
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = upper(var.sse_algorithm)
+    }
+  }
 }
 
