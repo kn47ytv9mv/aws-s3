@@ -33,3 +33,11 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "resource" {
   }
 }
 
+output "arn" {
+  value = aws_s3_bucket.resource.arn
+}
+
+output "bucket" {
+  value = aws_s3_bucket.resource.id
+}
+

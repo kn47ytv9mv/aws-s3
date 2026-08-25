@@ -26,11 +26,3 @@ variable "versioning" {
   default = "enabled"
 }
 
-output "arn" {
-  value = aws_s3_bucket.resource.arn
-}
-
-output "bucket" {
-  value = aws_s3_bucket.resource.id
-}
-
