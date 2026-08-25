@@ -3,9 +3,7 @@ resource "random_uuid" "resource" {
 }
 
 resource "aws_s3_bucket" "resource" {
-  bucket        = coalesce(var.bucket, try(random_uuid.resource[0].id, null))
-  force_destroy = var.force_destroy
-  tags          = var.tags
+  bucket = coalesce(var.bucket, try(random_uuid.resource[0].id, null))
 }
 
 resource "aws_s3_bucket_versioning" "resource" {
@@ -44,57 +42,6 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "resource" {
 
     bucket_key_enabled = var.bucket_key_enabled
   }
-}
-
-resource "aws_s3_bucket_lifecycle_configuration" "resource" {
-  count = var.noncurrent_version_expiration_days == null ? 0 : 1
-
-  bucket = aws_s3_bucket.resource.id
-
-  rule {
-    id     = "expire-noncurrent-versions"
-    status = "Enabled"
-
-    filter {}
-
-    noncurrent_version_expiration {
-      noncurrent_days = var.noncurrent_version_expiration_days
-    }
-  }
-}
-
-data "aws_iam_policy_document" "deny_insecure_transport" {
-  count = var.enforce_tls ? 1 : 0
-
-  statement {
-    sid    = "DenyInsecureTransport"
-    effect = "Deny"
-
-    actions = ["s3:*"]
-
-    resources = [
-      aws_s3_bucket.resource.arn,
-      "${aws_s3_bucket.resource.arn}/*",
-    ]
-
-    principals {
-      type        = "AWS"
-      identifiers = ["*"]
-    }
-
-    condition {
-      test     = "Bool"
-      variable = "aws:SecureTransport"
-      values   = ["false"]
-    }
-  }
-}
-
-resource "aws_s3_bucket_policy" "resource" {
-  count = var.enforce_tls ? 1 : 0
-
-  bucket = aws_s3_bucket.resource.id
-  policy = data.aws_iam_policy_document.deny_insecure_transport[0].json
 }
 
 output "arn" {
